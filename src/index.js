@@ -9,6 +9,7 @@ import {
 } from 'eth-sig-util';
 import { ethers } from 'ethers';
 import { toChecksumAddress } from 'ethereumjs-util';
+import MetaMaskSDK from '@metamask/sdk';
 import {
   hstBytecode,
   hstAbi,
@@ -167,7 +168,9 @@ const switchEthereumChain = document.getElementById('switchEthereumChain');
 const initialize = async () => {
   try {
     // We must specify the network as 'any' for ethers to allow network changes
-    ethersProvider = new ethers.providers.Web3Provider(window.ethereum, 'any');
+    const MMSDK = new MetaMaskSDK({});
+    const ethereum = MMSDK.getProvider();
+    ethersProvider = new ethers.providers.Web3Provider(ethereum);
     if (deployedContractAddress) {
       hstContract = new ethers.Contract(
         deployedContractAddress,
